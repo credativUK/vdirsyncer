@@ -213,3 +213,22 @@ class Storage(with_metaclass(StorageMeta)):
         when.
         '''
         yield
+
+    def get_meta(self, key):
+        '''Get metadata value for collection/storage.
+
+        :param key: The metadata key.
+        :type key: unicode
+        '''
+        raise NotImplementedError()
+
+    def set_meta(self, key, value):
+        '''Get metadata value for collection/storage.
+
+        :param key: The metadata key.
+        :type key: unicode
+        :param value: The value.
+        :type value: unicode
+        '''
+
+        raise NotImplementedError()
