@@ -42,12 +42,16 @@ class InvalidXMLResponse(exceptions.InvalidResponse):
 
 
 def _parse_xml(content):
-    try:
-        return etree.XML(content)
-    except etree.Error as e:
+    p = etree.XMLParser(recover=True)
+    rv = etree.XML(content, parser=p)
+    if rv is None:
         raise InvalidXMLResponse('Invalid XML encountered: {}\n'
                                  'Double-check the URLs in your config.'
-                                 .format(e))
+                                 .format(p.error_log))
+    if p.error_log:
+        dav_logger.warning('Partially invalid XML response: {}'
+                           .format(p.error_log))
+    return rv
 
 
 def _merge_xml(items):
